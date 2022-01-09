@@ -26,8 +26,8 @@ from time   import sleep
 import re
 
 # Valeurs min et max en Volts de l'anémomètre et conversion en m/s
-anemometer_min_volts = 0
-anemometer_max_volts = 2.8
+anemometer_min_volts = 0.4
+anemometer_max_volts = 2.0
 min_wind_speed = 0.0
 max_wind_speed = 32.4
 
