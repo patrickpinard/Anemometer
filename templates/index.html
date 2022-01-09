@@ -1,0 +1,59 @@
+<html>
+  <head>
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script type="text/javascript">
+      google.charts.load('current', {'packages':['gauge']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() 
+      {
+
+        var data = google.visualization.arrayToDataTable(
+          [
+            ['Label', 'Value'],
+            ['km/h', 25]
+          ]);
+
+        var options = 
+        {
+          width: 800, height: 400,
+          redFrom: 50, redTo: 100,
+          yellowFrom:25, yellowTo: 50,
+          greenFrom:0, greenTo: 25,
+          majorTicks: [0, 25, 50, 75, 100],
+          minorTicks: 5
+        };
+
+        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+
+        setInterval(function() {
+          var windspeed;
+          $.ajax({
+              url: "/windspeed",
+              type: "get",
+              dataType: 'json',
+              contentType: 'application/json',
+              data: {},
+              success: function(response) 
+                {
+                var obj = JSON.parse(JSON.stringify(response));
+                windspeed = obj.WINDSPEED;
+                data.setValue(0, 1, windspeed);
+                chart.draw(data, options);
+                },
+            });
+          data.setValue(0, 1, windspeed);
+          chart.draw(data, options);
+        }, 500);
+
+      }
+  </script>
+
+  </head>
+  <body>
+    <div id="chart_div" style="width: 400px; height: 120px;"></div>
+  </body>
+</html>
