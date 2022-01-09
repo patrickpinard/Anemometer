@@ -9,9 +9,7 @@ app = Flask(__name__)
 #ANEMOMETER = Anemometer()
 
 @app.route('/', methods=['GET'])
-def index():
-        
-    #return ('', 204)   
+def index(): 
     return render_template('index.html')
 
 @app.route('/windspeed', methods=['POST','GET'])
@@ -21,12 +19,13 @@ def windspeed():
     '''
     if request.method == "GET":
         windspeed = random.randrange(0,35)
-        data = {'WINDSPEED': windspeed}
         #windspeed = ANEMOMETER .read()
+        data = {'WINDSPEED': windspeed}
         return jsonify(data)  
     
     if request.method == "POST":
         return render_template('index.html')
+        #return ('', 204)  
 
 
 if __name__ == '__main__':
