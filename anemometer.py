@@ -26,8 +26,8 @@ from time   import sleep
 import re
 
 # Valeurs min et max en Volts de l'anémomètre et conversion en m/s
-anemometer_min_volts = 0.4
-anemometer_max_volts = 2.0
+anemometer_min_volts = 0
+anemometer_max_volts = 2.8
 min_wind_speed = 0.0
 max_wind_speed = 32.4
 
@@ -35,6 +35,9 @@ def mapRange(value, inMin, inMax, outMin, outMax):
     return outMin + (((value - inMin) / (inMax - inMin)) * (outMax - outMin))
 
 def truncate(num):
+    '''
+    truncate number to 2 digits but return a string
+    '''
     return re.sub(r'^(\d+\.\d{,2})\d*$',r'\1',str(num))
 
 class Anemometer(object):
@@ -84,7 +87,8 @@ class Anemometer(object):
             windspeed = (anemometer_voltage -0.4) / 2.0 * 32.4
         else:
             windspeed = 0.00
-        return round(anemometer_voltage,2), round(windspeed,2)
+        print('Windspeed [km/h] : ' ,'{:3.2f}'.format(windspeed),  end = "\r")
+        return  round(windspeed,2) 
         
    
 if __name__ == "__main__":
@@ -93,7 +97,7 @@ if __name__ == "__main__":
     WindSpeedSensor = Anemometer()
     while True:
         volts, windspeed  = WindSpeedSensor.read()
-        print('Volts : ', '{:3.2f}'.format(volts), 'Windspeed [m/s] : ' ,'{:3.2f}'.format(windspeed),  end = "\r")
+        print('Windspeed [km/h] : ' ,'{:3.2f}'.format(windspeed),  end = "\r")
         sleep(0.5)
 
    

@@ -2,11 +2,12 @@ from flask import Flask, request, render_template, jsonify
 import os, time
 from myLOGLib import LogEvent
 import random
-#from anenometer import Anemometer
+from flask_cors import CORS
+from anemometer import Anemometer
 
 app = Flask(__name__)
-
-#ANEMOMETER = Anemometer()
+CORS(app)
+ANEMOMETER = Anemometer()
 
 @app.route('/', methods=['GET'])
 def index(): 
@@ -15,11 +16,11 @@ def index():
 @app.route('/windspeed', methods=['POST','GET'])
 def windspeed():
     '''
-    Retourne la vitesse du vent en m/s
+    Retourne la vitesse du vent en km/h
     '''
     if request.method == "GET":
-        windspeed = random.randrange(0,35)
-        #windspeed = ANEMOMETER .read()
+        #windspeed = random.randrange(0,35)
+        windspeed = ANEMOMETER .read() * 3.6 # 1 m/s = 3.6 km/h
         data = {'WINDSPEED': windspeed}
         return jsonify(data)  
     
